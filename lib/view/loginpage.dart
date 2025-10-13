@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:crona/widgets/signupForm.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -41,14 +42,13 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Stack(
               children: [
-                Container(
-                  // color: Colors.red,
+                SizedBox(
                   height: 130, 
                   width: double.infinity,
                   child: Stack(
                     children: [
                       Positioned(
-                        top: -50,
+                        top: -52,
                         left: 190,
                         child: SvgPicture.asset(
                           'assets/images/signup_man.svg',
@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+      body: SignUpForm(),
     );
   }
 }
