@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:crona/widgets/signupForm.dart';
+import 'package:crona/widgets/loginform.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-      body: SignUpForm(),
+      body: LoginForm(),
     );
   }
 }

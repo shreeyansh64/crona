@@ -1,14 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
 
   @override
-  State<SignUpForm> createState() => _SignUpFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class _SignUpFormState extends State<SignUpForm> {
+class _LoginFormState extends State<LoginForm> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _obscure = true;
+  final _usernameFocus = FocusNode();
+  final _passFocus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameFocus.addListener(() {
+      setState(() {});
+    });
+    _passFocus.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _usernameFocus.dispose();
+    _passFocus.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,9 +55,19 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             SizedBox(height: 44),
             TextField(
+              focusNode: _usernameFocus,
               decoration: InputDecoration(
                 prefixIcon: Icon(CupertinoIcons.person_circle, size: 30),
-                prefixIconColor: Color.fromARGB(255, 102, 102, 102),
+                prefixIconColor: _usernameFocus.hasFocus
+                    ? Color.fromARGB(255, 126, 222, 195)
+                    : Color.fromARGB(255, 102, 102, 102),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: _usernameFocus.hasFocus
+                        ? Color.fromARGB(255, 126, 222, 195)
+                        : Color.fromARGB(255, 102, 102, 102),
+                  ),
+                ),
                 hint: Text(
                   "Username or Email",
                   style: TextStyle(
@@ -45,9 +81,36 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             SizedBox(height: 32),
             TextField(
+              obscureText: _obscure,
+              controller: _passwordController,
+              onChanged: (value) {
+                setState(() {});
+              },
+              focusNode: _passFocus,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock, size: 30),
-                prefixIconColor: Color.fromARGB(255, 102, 102, 102),
+                prefixIconColor: _passFocus.hasFocus
+                    ? Color.fromARGB(255, 126, 222, 195)
+                    : Color.fromARGB(255, 102, 102, 102),
+                suffixIcon: _passwordController.text.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(
+                          _obscure ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscure = !_obscure;
+                          });
+                        },
+                      )
+                    : null,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: _passFocus.hasFocus
+                        ? Color.fromARGB(255, 126, 222, 195)
+                        : Color.fromARGB(255, 102, 102, 102),
+                  ),
+                ),
                 hint: Text(
                   "Password",
                   style: TextStyle(
@@ -149,7 +212,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 ],
               ),
             ),
-            SizedBox(height: 160,)
+            SizedBox(height: 160),
           ],
         ),
       ),
