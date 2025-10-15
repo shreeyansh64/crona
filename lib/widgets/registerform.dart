@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -9,10 +10,16 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confpassController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final _isLoading = false;
   final _usernameFocus = FocusNode();
   final _passFocus = FocusNode();
   final _emailFocus = FocusNode();
   final _confpassFocus = FocusNode();
+  bool _obscure = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -101,27 +108,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
             ),
-            SizedBox(height: 9),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword()));
-                  },
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 23, 119, 92),
-                      fontFamily: 'Roboto',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -129,50 +116,18 @@ class _RegisterFormState extends State<RegisterForm> {
                   backgroundColor: Color.fromARGB(255, 40, 199, 154),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 ),
-                onPressed: () => login(
-                  _usernameController.text.trim(),
-                  _passwordController.text.trim(),
-                ),
-                child: _isLoading
-                ? SpinKitThreeBounce(color: Colors.black26,size: 20,)
-                :Text(
-                  "Login",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "or",
-              style: TextStyle(
-                color: Color.fromARGB(255, 102, 102, 102),
-                fontFamily: 'Roboto',
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Color.fromARGB(255, 39, 199, 153)),
-                ),
                 onPressed: () {},
-                child: Text(
-                  "Login with OTP",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w500,
-                    color: Color.fromARGB(255, 39, 199, 153),
-                  ),
-                ),
+                child: _isLoading
+                    ? SpinKitThreeBounce(color: Colors.black26, size: 20)
+                    : Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
               ),
             ),
             SizedBox(height: 13),
