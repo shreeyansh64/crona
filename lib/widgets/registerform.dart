@@ -1,89 +1,18 @@
-import 'package:crona/models/loginmodel.dart';
-import 'package:crona/services/loginservice.dart';
-import 'package:crona/view/forgot_pass.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:crona/view/dashboard.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
-  bool _obscure = true;
+class _RegisterFormState extends State<RegisterForm> {
   final _usernameFocus = FocusNode();
   final _passFocus = FocusNode();
-  final loginService = AuthService();
-  LoginResponse? result;
-
-  Future<void> login(String username, String pass) async {
-    setState(() {
-      _isLoading = true;
-    });
-    final data = await loginService.login(username, pass);
-
-    if (data != null) {
-      setState(() {
-        result = data;
-         _isLoading = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            data.success
-                ? 'Login successful! Welcome, ${data.data.username}'
-                : 'Login failed: ${data.message}',
-          ),
-          backgroundColor: data.success ? Colors.green : Colors.red,
-          duration: Duration(seconds: 2),
-        ),
-      );
-
-      if (data.success) {
-        // Navigate to Dashboard
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Dashboard()),
-        );
-      }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login request failed. Please try again.'),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _usernameFocus.addListener(() => setState(() {}));
-    _passFocus.addListener(() => setState(() {}));
-  }
-
-  @override
-  void dispose() {
-    _usernameFocus.dispose();
-    _passFocus.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
+  final _emailFocus = FocusNode();
+  final _confpassFocus = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -104,8 +33,8 @@ class _LoginFormState extends State<LoginForm> {
             ),
             SizedBox(height: 50),
             TextField(
-              controller: _usernameController,
-              focusNode: _usernameFocus,
+              // controller: _usernameController,
+              // focusNode: _usernameFocus,
               decoration: InputDecoration(
                 prefixIcon: Icon(CupertinoIcons.person_circle, size: 35),
                 prefixIconColor: _usernameFocus.hasFocus
