@@ -1,7 +1,10 @@
+import 'package:crona/models/registermodel.dart';
+import 'package:crona/services/registerservice.dart';
 import 'package:crona/view/loginpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:crona/view/dashboard.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -15,7 +18,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confpassController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final _isLoading = false;
+  bool _isLoading = false;
   final _usernameFocus = FocusNode();
   final _passFocus = FocusNode();
   final _emailFocus = FocusNode();
@@ -23,6 +26,58 @@ class _RegisterFormState extends State<RegisterForm> {
   bool _obscure = true;
   bool _obscureconf = true;
 
+  RegisterModel? result;
+  final registerService = RegisterService();
+
+Future<void> register(String username, String email, String password) async {
+  setState(() {
+    _isLoading = true;
+  });
+
+  final data = await registerService.registerUser(
+    username: username,
+    email: email,
+    password: password,
+  );
+
+  if (data != null) {
+    setState(() {
+      result = data;
+      _isLoading = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          data.success
+              ? 'Registration successful! Welcome, ${data.data?.username}'
+              : 'Registration failed: ${data.message}',
+        ),
+        backgroundColor: data.success ? Colors.green : Colors.red,
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    if (data.success) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+    }
+  } else {
+    setState(() {
+      _isLoading = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Registration request failed. Please try again.'),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+}
 
   @override
   void initState() {
