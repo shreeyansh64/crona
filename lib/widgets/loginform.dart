@@ -1,5 +1,8 @@
+import 'package:crona/models/loginmodel.dart';
+import 'package:crona/services/loginservice.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:crona/view/dashboard.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -14,16 +17,52 @@ class _LoginFormState extends State<LoginForm> {
   bool _obscure = true;
   final _usernameFocus = FocusNode();
   final _passFocus = FocusNode();
+  final loginService = AuthService();
+  LoginResponse? result;
+
+  Future<void> login(String username, String pass) async {
+    final data = await loginService.login(username, pass);
+
+    if (data != null) {
+      setState(() {
+        result = data;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            data.success
+                ? 'Login successful! Welcome, ${data.data.username}'
+                : 'Login failed: ${data.message}',
+          ),
+          backgroundColor: data.success ? Colors.green : Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      if (data.success) {
+        // Navigate to Dashboard
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login request failed. Please try again.'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _usernameFocus.addListener(() {
-      setState(() {});
-    });
-    _passFocus.addListener(() {
-      setState(() {});
-    });
+    _usernameFocus.addListener(() => setState(() {}));
+    _passFocus.addListener(() => setState(() {}));
   }
 
   @override
@@ -55,6 +94,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             SizedBox(height: 44),
             TextField(
+              controller: _usernameController,
               focusNode: _usernameFocus,
               decoration: InputDecoration(
                 prefixIcon: Icon(CupertinoIcons.person_circle, size: 30),
@@ -83,9 +123,6 @@ class _LoginFormState extends State<LoginForm> {
             TextField(
               obscureText: _obscure,
               controller: _passwordController,
-              onChanged: (value) {
-                setState(() {});
-              },
               focusNode: _passFocus,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock, size: 30),
@@ -148,7 +185,10 @@ class _LoginFormState extends State<LoginForm> {
                   backgroundColor: Color.fromARGB(255, 40, 199, 154),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 ),
-                onPressed: () {},
+                onPressed: () => login(
+                  _usernameController.text,
+                  _passwordController.text,
+                ),
                 child: Text(
                   "Login",
                   style: TextStyle(
