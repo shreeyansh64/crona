@@ -1,6 +1,7 @@
 import 'package:crona/models/loginmodel.dart';
 import 'package:crona/services/loginservice.dart';
 import 'package:crona/view/forgot_pass.dart';
+import 'package:crona/view/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crona/view/dashboard.dart';
@@ -246,30 +247,35 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-            SizedBox(height: 13),
-            Text.rich(
-              TextSpan(
-                text: "Don't have an account?",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Roboto',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-                children: [
-                  TextSpan(
-                    text: " Sign Up",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 29, 149, 115),
-                      fontFamily: 'Roboto',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: (){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>RegisterPage()));
+              },
+              child: Text.rich(
+                TextSpan(
+                  text: "Don't have an account?",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Roboto',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
+                  children: [
+                    TextSpan(
+                      text: " Sign Up",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 29, 149, 115),
+                        fontFamily: 'Roboto',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 160),
+            SizedBox(height: 130),
           ],
         ),
       ),
